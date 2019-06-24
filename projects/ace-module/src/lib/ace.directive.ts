@@ -14,14 +14,16 @@ export class AceDirective implements OnInit, OnChanges {
   @Input() theme: AceTheme = 'textmate';
   @Input() value = '';
   @Input() options: { enableBasicAutocompletion: boolean, [ Key: string ]: any } = {
-    enableBasicAutocompletion: true,
+    enableBasicAutocompletion: false,
     enableLiveAutocompletion: true,
     enableSnippets: true
   };
-
   @Output() sessionChange = new EventEmitter();
-
   @Input() readonly: boolean = false;
+
+
+  /* options */
+  @Input() showLineNumbers: boolean = true;
 
 
   private editor: Editor;
@@ -36,8 +38,11 @@ export class AceDirective implements OnInit, OnChanges {
     this.editor.setValue(val, cursorPos);
   }
 
-  setOptions(options: any) {
-    this.editor.setOptions(options);
+  setOptions() {
+    this.editor.setOptions({
+      ...this.options,
+      showLineNumbers: this.showLineNumbers
+    });
   }
 
 
@@ -62,7 +67,7 @@ export class AceDirective implements OnInit, OnChanges {
     this.setMode(this.mode);
     this.setTheme(this.theme);
     this.setValue(this.value);
-    this.setOptions(this.options);
+    this.setOptions();
     this.editor.setReadOnly(this.readonly);
     this.addChange();
     this.editor.setReadOnly(this.readonly);
@@ -73,7 +78,7 @@ export class AceDirective implements OnInit, OnChanges {
     this.setMode(this.mode);
     this.setTheme(this.theme);
     this.setValue(this.value);
-    this.setOptions(this.options);
+    this.setOptions();
     this.editor.setReadOnly(this.readonly);
   }
 
