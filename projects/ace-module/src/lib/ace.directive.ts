@@ -1,17 +1,27 @@
 import { Directive, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import * as AceAjax from 'brace';
 import { Editor } from 'brace';
+import { AceMode, AceTheme } from './ace-mode';
 
 const brace = require('brace');
+const tolls = require('brace/ext/language_tools');
 
 @Directive({
   selector: '[ace]'
 })
 export class AceDirective implements OnInit, OnChanges {
-  @Input() mode = 'javascript';
-  @Input() theme = 'monokai';
+  @Input() mode: AceMode = 'javascript';
+  @Input() theme: AceTheme = 'textmate';
   @Input() value = '';
+  @Input() options: { enableBasicAutocompletion: boolean, [ Key: string ]: any } = {
+    enableBasicAutocompletion: true,
+    enableLiveAutocompletion: true,
+    enableSnippets: true
+  };
+
   @Output() sessionChange = new EventEmitter();
+
+  @Input() readonly: boolean = false;
 
 
   private editor: Editor;
@@ -25,6 +35,11 @@ export class AceDirective implements OnInit, OnChanges {
   setValue(val: string, cursorPos?: number) {
     this.editor.setValue(val, cursorPos);
   }
+
+  setOptions(options: any) {
+    this.editor.setOptions(options);
+  }
+
 
   getValue(): string {
     return this.editor.getValue();
@@ -47,14 +62,19 @@ export class AceDirective implements OnInit, OnChanges {
     this.setMode(this.mode);
     this.setTheme(this.theme);
     this.setValue(this.value);
+    this.setOptions(this.options);
+    this.editor.setReadOnly(this.readonly);
     this.addChange();
+    this.editor.setReadOnly(this.readonly);
     this.clearSelection();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.setValue(this.value);
-    this.setTheme(this.theme);
     this.setMode(this.mode);
+    this.setTheme(this.theme);
+    this.setValue(this.value);
+    this.setOptions(this.options);
+    this.editor.setReadOnly(this.readonly);
   }
 
 
