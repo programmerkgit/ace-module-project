@@ -119,6 +119,41 @@
           }
         }
       }
+    },
+    "ace-module": {
+      "projectType": "library",
+      "root": "projects/ace-module",
+      "sourceRoot": "projects/ace-module/src",
+      "prefix": "ace",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ace-module/tsconfig.lib.json",
+            "project": "projects/ace-module/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ace-module/src/test.ts",
+            "tsConfig": "projects/ace-module/tsconfig.spec.json",
+            "karmaConfig": "projects/ace-module/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ace-module/tsconfig.lib.json",
+              "projects/ace-module/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }},
   "defaultProject": "ace-module-project"
 }

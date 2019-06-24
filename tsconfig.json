@@ -18,6 +18,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ace-module": [
+        "dist/ace-module"
+      ],
+      "ace-module/*": [
+        "dist/ace-module/*"
+      ]
+    }
   }
 }
