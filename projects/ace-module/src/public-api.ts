@@ -4,4 +4,4 @@
 
 export * from './lib/ace-module.service';
 export * from './lib/ace-module.component';
-export * from './lib/ace-module.module';
+export * from './lib/ace.module';

@@ -8,4 +8,4 @@ import { AceDirective } from './ace.directive';
   ],
   exports: [AceModuleComponent]
 })
-export class AceModuleModule { }
+export class AceModule { }
