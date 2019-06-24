@@ -3,6 +3,5 @@
  */
 
 export * from './lib/ace-module.service';
-export * from './lib/ace-module.component';
 export * from './lib/ace.directive';
 export * from './lib/ace.module';

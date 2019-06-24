@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import * as AceAjax from 'brace';
 import { Editor } from 'brace';
 
@@ -7,11 +7,11 @@ const brace = require('brace');
 @Directive({
   selector: '[ace]'
 })
-export class AceDirective implements OnInit {
+export class AceDirective implements OnInit, OnChanges {
   @Input() mode = 'javascript';
   @Input() theme = 'monokai';
-  @Input() value: string;
-  @Output() change = new EventEmitter();
+  @Input() value = '';
+  @Output() sessionChange = new EventEmitter();
 
 
   private editor: Editor;
@@ -19,6 +19,7 @@ export class AceDirective implements OnInit {
   constructor(
     private el: ElementRef
   ) {
+    this.initEditor();
   }
 
   setValue(val: string, cursorPos?: number) {
@@ -42,18 +43,24 @@ export class AceDirective implements OnInit {
   }
 
   ngOnInit() {
-    this.initEditor();
-    this.setMode();
-    this.setTheme();
+
+    this.setMode(this.mode);
+    this.setTheme(this.theme);
     this.setValue(this.value);
     this.addChange();
     this.clearSelection();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.setValue(this.value);
+    this.setTheme(this.theme);
+    this.setMode(this.mode);
+  }
+
 
   private addChange() {
-    this.editor.getSession().on('change', () => {
-      this.change.emit(this.getValue());
+    this.editor.getSession().on('change', (e) => {
+      this.sessionChange.emit(e);
     });
   }
 
@@ -62,14 +69,14 @@ export class AceDirective implements OnInit {
     this.editor = brace.edit(this.el.nativeElement);
   }
 
-  private setMode(): void {
-    require(`brace/mode/${ this.mode }`);
-    this.editor.getSession().setMode(`ace/mode/${ this.mode }`);
+  private setMode(mode: string): void {
+    require(`brace/mode/${ mode }`);
+    this.editor.getSession().setMode(`ace/mode/${ mode }`);
   }
 
-  private setTheme(): void {
-    require(`brace/theme/${ this.theme }`);
-    this.editor.setTheme(`ace/theme/${ this.theme }`);
+  private setTheme(theme: string): void {
+    require(`brace/theme/${ theme }`);
+    this.editor.setTheme(`ace/theme/${ theme }`);
   }
 
 }

@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
-import { AceModuleComponent } from './ace-module.component';
 import { AceDirective } from './ace.directive';
 
 @NgModule({
-  declarations: [ AceModuleComponent, AceDirective ],
+  declarations: [ AceDirective ],
   imports: [],
-  exports: [ AceModuleComponent, AceDirective ]
+  exports: [ AceDirective ]
 })
 export class AceModule {
 }
