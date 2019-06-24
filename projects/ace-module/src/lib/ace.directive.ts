@@ -14,7 +14,7 @@ export class AceDirective implements OnInit, OnChanges {
   @Input() theme: AceTheme = 'textmate';
   @Input() value = '';
   @Input() options: { enableBasicAutocompletion: boolean, [ Key: string ]: any } = {
-    enableBasicAutocompletion: false,
+    enableBasicAutocompletion: true,
     enableLiveAutocompletion: true,
     enableSnippets: true
   };
